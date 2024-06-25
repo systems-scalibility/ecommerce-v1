@@ -7,6 +7,6 @@ RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
-ENV ConnectionStrings__DefaultConnection="server=mysql-master;database=ecommerce;user=root;password=pw"
+ENV ConnectionStrings__DefaultConnection="server=mysql-v1;database=ecommerce;user=root;password=pw"
 COPY --from=build /App/out .
 ENTRYPOINT ["dotnet", "ecommerce-v1.dll"]

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import prettyMilliseconds from 'pretty-ms';
 
-const connection = "http://localhost:5158/"
+const connection = "http://localhost:5156/"
 
 const request = axios.create({
     baseURL: connection
@@ -38,7 +38,7 @@ calculateTime(start, end)
 console.log('Starting petitions by date...')
 start = new Date().getTime()
 for (let i = 0; i < 100; i++) {
-    await getAllByDate('2024-06-25 04:53:17', '2024-06-25 04:59:17')
+    await getAllByDate('2024-06-25 12:51:22', '2024-06-25 12:58:22')
 }
 end = new Date().getTime()
 calculateTime(start, end)
@@ -50,5 +50,3 @@ for (let i = 0; i < 1000; i++) {
 }
 end = new Date().getTime()
 calculateTime(start, end)
-
-connection.end();

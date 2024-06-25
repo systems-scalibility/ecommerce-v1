@@ -15,7 +15,12 @@ public class SalesOrderItemService(AppDbContext context)
     public async Task<IEnumerable<SalesOrderItem?>> GetAllByCodeNumber(string? codeNumber)
     {
         return await context.SalesOrderItems
-            .Where(x => x.Product!.CodeNumber == codeNumber)
+            .Join(context.Products,
+                salesOrderItem => salesOrderItem.ProductId,
+                product => product.ProductId,
+                (salesOrderItem, product) => new { salesOrderItem, product })
+            .Where(pSoi => pSoi.product.CodeNumber == codeNumber)
+            .Select(pSoi => pSoi.salesOrderItem)
             .ToListAsync();
     }
 

@@ -2,7 +2,6 @@ using ecommerce_v1.Db;
 using ecommerce_v1.Services;
 using Microsoft.EntityFrameworkCore;
 using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,5 +37,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await app.UseOcelot(); 
 app.Run();

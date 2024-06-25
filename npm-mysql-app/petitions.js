@@ -1,27 +1,54 @@
 import axios from 'axios';
+import prettyMilliseconds from 'pretty-ms';
 
-const connection = "http://localhost:5157/"
+const connection = "http://localhost:5158/"
 
 const request = axios.create({
     baseURL: connection
 })
 
 const getAllByCodeNumber = async (codeNumber) => {
-    const {data} = await request.get(`api/SalesOrderItem/product/${codeNumber}`)
-    console.log(data)
+    await request.get(`api/SalesOrderItem/product/${codeNumber}`)
 }
 
 const getAllByDate = async (startDate, endDate) => {
-    const {data} = await request
+    await request
         .get(`api/SalesOrderItem/range-dates?startDate=${startDate}&endDate=${endDate}`)
-    console.log(data)
 }
 
 const getAllByQuantity = async (quantity, condition) => {
-    const {data} = await request.get(`api/SalesOrderItem/quantity/${quantity}?condition=${condition}`)
-    console.log(data)
+    await request.get(`api/SalesOrderItem/quantity/${quantity}?condition=${condition}`)
 }
 
-await getAllByCodeNumber('P0002')
-await getAllByDate('2024-06-19 12:31:05', '2024-06-19 12:31:06')
-await getAllByQuantity(10, '=')
+const calculateTime = (start, end) => {
+    let time = end - start;
+    let timeStr = prettyMilliseconds(time, {separateMilliseconds: true});
+    console.log(`Executed in ${timeStr}`);
+}
+
+console.log('Starting petitions...')
+console.log('Starting petitions by code number...')
+let start = new Date().getTime()
+for (let i = 0; i < 1000; i++) {
+    await getAllByCodeNumber(`P000${i + 1}`)
+}
+let end = new Date().getTime()
+calculateTime(start, end)
+
+console.log('Starting petitions by date...')
+start = new Date().getTime()
+for (let i = 0; i < 100; i++) {
+    await getAllByDate('2024-06-25 04:53:17', '2024-06-25 04:59:17')
+}
+end = new Date().getTime()
+calculateTime(start, end)
+
+console.log('Starting petitions by quantity...')
+start = new Date().getTime()
+for (let i = 0; i < 1000; i++) {
+    await getAllByQuantity(Math.floor(Math.random() * 10) + 1, '=')
+}
+end = new Date().getTime()
+calculateTime(start, end)
+
+connection.end();
